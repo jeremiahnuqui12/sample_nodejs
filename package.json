@@ -1,0 +1,24 @@
+{
+  "name": "node_sample",
+  "version": "1.0.0",
+  "description": "node_sample",
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "detect-browser": "^4.8.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "mysql": "^2.17.1",
+    "nodemailer": "^6.4.2",
+    "nodemon": "^2.0.1",
+    "request": "^2.88.0",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node",
+    "dev": "nodemon"
+  },
+  "author": "jmnuqui",
+  "license": "ISC"
+}

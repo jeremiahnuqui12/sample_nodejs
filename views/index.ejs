@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div>
+        <form class="" id="menuForm">
+          <div class="row">
+            <div class="form-group p-3 col-md-6">
+              <label for="menuLabel">Menu</label>
+              <input type="text" class="form-control" required name="menu" id="menuLabel"/>
+            </div>
+            <div class="form-group p-3 col-md-6">
+              <label for="menuDescription">Description</label>
+              <input type="text" class="form-control" required name="description" id="menuDescription">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-outline-dark" name="button">Add Menu</button>
+        </form>
+      </div>
+      <div class="mt-5">
+        <div>
+          <table class="table table responsive">
+            <thead>
+              <tr>
+                <th>Menu</th>
+                <th>Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        //Update List
+        $(document.body).on('click', '.delete-menu' , function(){
+        // $('.update-menu').click(function(){
+          $.ajax({
+            type: 'DELETE',
+            url: 'api/menu/delete/' + $(this).val(),
+            success: function(response) {
+              // alert(response);
+            }, error: function(err) {
+              alert('Error:');
+            }
+          });
+          $('tbody').html("");
+          fetchMenu();
+          e.preventDefault();
+        });
+        
+        $('#menuForm').submit(function(e){
+          $.ajax({
+            type: 'POST',
+            url: 'api/menu/add',
+            data: $(this).serialize(),
+            success: function(response) {
+              alert(JSON.stringify(response));
+            }, error: function(err) {
+              alert('Error:' + err);
+            }
+          });
+          $('tbody').html("");
+          fetchMenu();
+          e.preventDefault();
+        });
+        fetchMenu();
+      });
+
+      function fetchMenu() {
+        $.ajax('api/menu', {
+          success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+              let tr = $('<tr>');
+              tr.append(
+                $('<td>').text(data[i].menu),
+                $('<td>').text(data[i].description),
+                $('<td>').append(
+                  $('<input>').attr({
+                    type: 'hidden',
+                    value: data[i].id
+                  }),
+                  $('<button>').attr('type', 'button').val(data[i].id).addClass('update-menu btn btn-outline-secondary mr-3').text('Update'),
+                  $('<button>').attr('type', 'button').val(data[i].id).addClass('delete-menu btn btn-outline-danger').text('Delete'),
+                )
+              );
+              $('tbody').append(tr);
+            }
+          }, error: function(err) {
+            alert('error' + JSON.stringify(err));
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
